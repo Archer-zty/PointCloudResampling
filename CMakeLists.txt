@@ -55,6 +55,24 @@ if (WIN32)
     )
 elseif (APPLE)
     message(STATUS "OS is Apple systens.")
+    find_package(glfw3 REQUIRED)
+    find_package(opengl REQUIRED)
+
+    set(mac_extra_libs "")
+    find_library(cocoa_library Cocoa)
+    find_library(opengl_library OpenGL)
+    find_library(corevideo_library CoreVideo)
+    find_library(iokit_library IOKit)
+    list(APPEND mac_extra_libs ${cocoa_library} ${opengl_library} ${corevideo_library} ${iokit_library})
+
+    include_directories(ext/imgui)
+    include_directories(ext/imgui/examples)
+    include_directories(ext/imgui/examples/libs/gl3w)
+    set(imgui_OS_src
+        ext/imgui/examples/imgui_impl_glfw.cpp
+        ext/imgui/examples/imgui_impl_opengl3.cpp
+        ext/imgui/examples/libs/gl3w/GL/gl3w.c
+    )
 elseif (UNIX)
     message(STATUS "OS is UNIX-like OS's.")
     include_directories(ext/imgui)
@@ -85,7 +103,7 @@ add_executable(PointCloudResampling ${imgui_OS_src} ${imgui_src} ${src})
 if (WIN32)
     target_link_libraries(PointCloudResampling glfw3 opengl32 gdi32 shell32)
 elseif (APPLE)
-    message(STATUS "OS is Apple systens.")
+    target_link_libraries(PointCloudResampling glfw ${mac_extra_libs})
 elseif (UNIX)
     target_link_libraries(PointCloudResampling glfw rt m dl GL)
 endif ()
