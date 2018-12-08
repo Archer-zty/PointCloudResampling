@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project("PointCloudResampling")
 
-if (NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ext/imgui")
+if (NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ext/imgui/examples")
   message(FATAL_ERROR "3rd party is missing! "
     "You probably did not clone the project with --recursive. It is possible to recover "
     "by calling \"git submodule update --init --recursive\"")
@@ -45,6 +45,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 message(STATUS "operation system is ${CMAKE_SYSTEM}")
 if (WIN32)
     message(STATUS "OS is windows")
+    include_directories(ext/imgui)
+    include_directories(ext/imgui/examples)
+    include_directories(ext/imgui/examples/libs/gl3w)
+    set(imgui_OS_src
+        ext/imgui/examples/imgui_impl_glfw.cpp
+        ext/imgui/examples/imgui_impl_opengl3.cpp
+        ext/imgui/examples/libs/gl3w/GL/gl3w.c
+    )
 elseif (APPLE)
     message(STATUS "OS is Apple systens.")
 elseif (UNIX)
@@ -59,7 +67,7 @@ elseif (UNIX)
     )
 endif ()
 
-find_package(glfw3 REQUIRED)
+#find_package(glfw3 REQUIRED)
 
 set(imgui_src
     ext/imgui/imgui.cpp
@@ -75,7 +83,7 @@ set(src
 add_executable(PointCloudResampling ${imgui_OS_src} ${imgui_src} ${src})
 
 if (WIN32)
-    message(STATUS "OS is windows")
+    target_link_libraries(PointCloudResampling glfw3 opengl32 gdi32 shell32)
 elseif (APPLE)
     message(STATUS "OS is Apple systens.")
 elseif (UNIX)
