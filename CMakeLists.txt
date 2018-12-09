@@ -107,3 +107,8 @@ elseif (APPLE)
 elseif (UNIX)
     target_link_libraries(PointCloudResampling glfw rt m dl GL)
 endif ()
+
+### necessary files
+file(COPY res DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ScreenShot)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/RuntimeFiles)
