@@ -94,11 +94,15 @@ set(imgui_src
     ext/imgui/imgui_widgets.cpp
 )
 
+set(interface_header
+    interface.h
+)
+
 set(src
   main.cpp
 )
 
-add_executable(PointCloudResampling ${imgui_OS_src} ${imgui_src} ${src})
+add_executable(PointCloudResampling ${imgui_OS_src} ${imgui_src} ${src} ${interface_header})
 
 if (WIN32)
     target_link_libraries(PointCloudResampling glfw3 opengl32 gdi32 shell32)
